@@ -1,0 +1,13 @@
+---
+galaxy_info:
+  author: Òscar Casajuana
+  description: Transmission BT role
+  license: MIT
+  min_ansible_version: 1.9
+  platforms:
+  - name: debian
+    versions:
+    - jessie
+  categories:
+  - p2p
+  - network
