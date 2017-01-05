@@ -4,15 +4,17 @@
   apt:
     name: transmission-daemon
     state: present
-  tags: transmission
 
 # Configuration
 - name: Make sure transmission is not running
   service:
     name: transmission-daemon
     state: stopped
+
+- name: Test downloads folder
+  command: "ls {{ transmission_download_dir }}"
+  register: ls_transmission_download_dir
   ignore_errors: true
-  tags: transmission
 
 - name: Add downloads folder
   file:
@@ -21,7 +23,7 @@
     owner: "{{ transmission_user }}"
     group: debian-transmission
     mode: 0775
-  tags: transmission
+  when: ls_transmission_download_dir.rc != 0
 
 - name: Add watch dir
   file:
@@ -31,7 +33,11 @@
     group: debian-transmission
     mode: 0775
   when: transmission_watch_dir_enabled
-  tags: transmission
+
+- name: Test incomplete folder
+  command: "ls {{ transmission_incomplete_dir }}"
+  register: ls_transmission_incomplete_dir
+  ignore_errors: true
 
 - name: Add incomplete folder
   file:
@@ -40,26 +46,21 @@
     owner: "{{ transmission_user }}"
     group: debian-transmission
     mode: 0775
-  when: transmission_incomplete_dir_enabled
-  tags: transmission
+  when: transmission_incomplete_dir_enabled and ls_transmission_incomplete_dir.rc != 0
 
 - name: Copy Transmission configuration
   template:
     src: etc/transmission-daemon/settings.json.j2
     dest: /etc/transmission-daemon/settings.json
-  tags: transmission
 
 - name: Add current user to transmission group
   user:
     name: "{{ transmission_user }}"
     groups: debian-transmission
     append: yes
-  tags: transmission
 
 # Service start
 - name: Start transmission
   service:
     name: transmission-daemon
     state: started
-  ignore_errors: true
-  tags: transmission
