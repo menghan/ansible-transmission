@@ -16,3 +16,5 @@ transmission_script_torrent_done_enabled: false
 transmission_script_torrent_done_filename: ""
 transmission_peer_port: 51413
 transmission_preallocation: 1
+transmission_ratio_limit: 2
+transmission_ratio_limit_enabled: false
