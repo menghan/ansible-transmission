@@ -6,10 +6,17 @@
     state: present
 
 # Configuration
-- name: Make sure transmission is not running
+- name: Make sure old transmission is not running nor working
   service:
     name: transmission-daemon
     state: stopped
+    enabled: no
+
+- name: Make sure transmission is not running
+  service:
+    name: custom-transmission-daemon
+    state: stopped
+  ignore_errors: yes
 
 - name: chown transmission lib directory
   file:
@@ -60,6 +67,11 @@
     src: etc/transmission-daemon/settings.json.j2
     dest: /etc/transmission-daemon/settings.json
 
+- name: Copy transmission systemd file
+  template:
+    src: transmission-daemon.service
+    dest: /etc/systemd/system/custom-transmission-daemon.service
+
 - name: Add current user to transmission group
   user:
     name: "{{ transmission_user }}"
@@ -68,6 +80,8 @@
 
 # Service start
 - name: Start transmission
-  service:
-    name: transmission-daemon
+  systemd:
+    name: custom-transmission-daemon
     state: started
+    enabled: yes
+    daemon-reload: yes
