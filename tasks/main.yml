@@ -25,6 +25,12 @@
     group: debian-transmission
     recurse: yes
 
+- name: chown transmission setting json file
+  file:
+    path: /etc/transmission-daemon/settings.json
+    owner: "{{ transmission_user }}"
+    group: debian-transmission
+
 - name: Test downloads folder
   command: "ls {{ transmission_download_dir }}"
   register: ls_transmission_download_dir
