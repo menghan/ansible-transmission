@@ -1,0 +1,20 @@
+---
+
+- name: Copy transmission systemd file
+  template:
+    src: transmission-daemon.service
+    dest: /etc/systemd/system/custom-transmission-daemon.service
+
+- name: Add current user to transmission group
+  user:
+    name: "{{ transmission_user }}"
+    groups: debian-transmission
+    append: yes
+
+# Service start
+- name: Start transmission
+  systemd:
+    name: custom-transmission-daemon
+    state: started
+    enabled: yes
+    daemon-reload: yes

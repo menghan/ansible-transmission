@@ -1,4 +1,8 @@
 ---
+transmission_install: yes
+transmission_config: yes
+transmission_deploy: yes
+
 transmission_user: debian-transmission
 transmission_umask: 2
 transmission_download_dir: "{{ ansible_env.HOME }}/downloads"

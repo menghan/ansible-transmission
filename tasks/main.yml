@@ -4,90 +4,12 @@
   apt:
     name: transmission-daemon
     state: present
+  when: transmission_install
 
-# Configuration
-- name: Make sure old transmission is not running nor working
-  service:
-    name: transmission-daemon
-    state: stopped
-    enabled: no
+- name: Config Transmission
+  include: config.yml
+  when: transmission_config
 
-- name: Make sure transmission is not running
-  service:
-    name: custom-transmission-daemon
-    state: stopped
-  ignore_errors: yes
-
-- name: chown transmission lib directory
-  file:
-    path: /var/lib/transmission-daemon/.config/transmission-daemon
-    owner: "{{ transmission_user }}"
-    group: debian-transmission
-    recurse: yes
-
-- name: chown transmission setting json file
-  file:
-    path: /etc/transmission-daemon/settings.json
-    owner: "{{ transmission_user }}"
-    group: debian-transmission
-
-- name: Test downloads folder
-  command: "ls {{ transmission_download_dir }}"
-  register: ls_transmission_download_dir
-  ignore_errors: true
-
-- name: Add downloads folder
-  file:
-    state: directory
-    path: "{{ transmission_download_dir }}"
-    owner: "{{ transmission_user }}"
-    group: debian-transmission
-    mode: 0775
-  when: ls_transmission_download_dir.rc != 0
-
-- name: Add watch dir
-  file:
-    state: directory
-    path: "{{ transmission_watch_dir }}"
-    owner: "{{ transmission_user }}"
-    group: debian-transmission
-    mode: 0775
-  when: transmission_watch_dir_enabled
-
-- name: Test incomplete folder
-  command: "ls {{ transmission_incomplete_dir }}"
-  register: ls_transmission_incomplete_dir
-  ignore_errors: true
-
-- name: Add incomplete folder
-  file:
-    state: directory
-    path: "{{ transmission_incomplete_dir }}"
-    owner: "{{ transmission_user }}"
-    group: debian-transmission
-    mode: 0775
-  when: transmission_incomplete_dir_enabled and ls_transmission_incomplete_dir.rc != 0
-
-- name: Copy Transmission configuration
-  template:
-    src: etc/transmission-daemon/settings.json.j2
-    dest: /etc/transmission-daemon/settings.json
-
-- name: Copy transmission systemd file
-  template:
-    src: transmission-daemon.service
-    dest: /etc/systemd/system/custom-transmission-daemon.service
-
-- name: Add current user to transmission group
-  user:
-    name: "{{ transmission_user }}"
-    groups: debian-transmission
-    append: yes
-
-# Service start
-- name: Start transmission
-  systemd:
-    name: custom-transmission-daemon
-    state: started
-    enabled: yes
-    daemon-reload: yes
+- name: Deploy Transmission
+  include: deploy.yml
+  when: transmission_deploy
