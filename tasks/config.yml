@@ -22,9 +22,17 @@
     group: debian-transmission
     recurse: yes
 
-- name: chown transmission setting json file
+- name: rm current symbol link
   file:
     path: /var/lib/transmission-daemon/.config/transmission-daemon/settings.json
+    state: absent
+
+- name: Copy Transmission configuration
+  template:
+    src: etc/transmission-daemon/settings.json.j2
+    dest: /var/lib/transmission-daemon/.config/transmission-daemon/settings.json
+    force: yes
+    backup: yes
     owner: "{{ transmission_user }}"
     group: debian-transmission
 
@@ -55,6 +63,7 @@
   command: "ls {{ transmission_incomplete_dir }}"
   register: ls_transmission_incomplete_dir
   ignore_errors: true
+  when: transmission_incomplete_dir_enabled
 
 - name: Add incomplete folder
   file:
@@ -64,10 +73,3 @@
     group: debian-transmission
     mode: 0775
   when: transmission_incomplete_dir_enabled and ls_transmission_incomplete_dir.rc != 0
-
-- name: Copy Transmission configuration
-  template:
-    src: etc/transmission-daemon/settings.json.j2
-    dest: /var/lib/transmission-daemon/.config/transmission-daemon/settings.json
-    force: yes
-    backup: yes
