@@ -5,11 +5,11 @@ transmission_deploy: yes
 
 transmission_user: debian-transmission
 transmission_umask: 2
-transmission_download_dir: "{{ ansible_env.HOME }}/downloads"
+transmission_download_dir: /var/lib/transmission-daemon/downloads
 transmission_incomplete_dir_enabled: false
-transmission_incomplete_dir: "{{ ansible_env.HOME }}/.incomplete"
+transmission_incomplete_dir: /var/lib/transmission-daemon/incomplete
 transmission_watch_dir_enabled: true
-transmission_watch_dir: "{{ ansible_env.HOME }}/torrents"
+transmission_watch_dir: /var/lib/transmission-daemon/torrents
 transmission_rpc_auth_required: false
 transmission_rpc_username: youShouldChangeThisUnlessDisablingAuth
 transmission_rpc_password: youShouldChangeThisUnlessDisablingAuth

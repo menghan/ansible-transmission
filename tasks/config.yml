@@ -24,7 +24,7 @@
 
 - name: chown transmission setting json file
   file:
-    path: /etc/transmission-daemon/settings.json
+    path: /var/lib/transmission-daemon/.config/transmission-daemon/settings.json
     owner: "{{ transmission_user }}"
     group: debian-transmission
 
@@ -68,4 +68,6 @@
 - name: Copy Transmission configuration
   template:
     src: etc/transmission-daemon/settings.json.j2
-    dest: /etc/transmission-daemon/settings.json
+    dest: /var/lib/transmission-daemon/.config/transmission-daemon/settings.json
+    force: yes
+    backup: yes
