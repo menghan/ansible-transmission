@@ -4,6 +4,7 @@ transmission_config: yes
 transmission_deploy: yes
 
 transmission_user: debian-transmission
+transmission_group: debian-transmission
 transmission_umask: 2
 transmission_download_dir: /var/lib/transmission-daemon/downloads
 transmission_incomplete_dir_enabled: false

@@ -8,7 +8,7 @@
 - name: Add current user to transmission group
   user:
     name: "{{ transmission_user }}"
-    groups: debian-transmission
+    groups: "{{ transmission_group }}"
     append: yes
 
 # Service start

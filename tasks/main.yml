@@ -1,5 +1,5 @@
 ---
-# Installation
+
 - name: Install Transmission
   apt:
     name: transmission-daemon
