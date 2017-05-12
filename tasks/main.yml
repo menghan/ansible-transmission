@@ -4,12 +4,12 @@
   apt:
     name: transmission-daemon
     state: present
-  when: transmission_install
+  when: transmission_do_install
 
 - name: Config Transmission
   include: config.yml
-  when: transmission_config
+  when: transmission_do_config
 
 - name: Deploy Transmission
   include: deploy.yml
-  when: transmission_depoy and ansible_connection != "docker"
+  when: transmission_do_depoy and ansible_connection != "docker"

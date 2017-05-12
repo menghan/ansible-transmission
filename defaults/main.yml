@@ -1,7 +1,7 @@
 ---
-transmission_install: yes
-transmission_config: yes
-transmission_deploy: yes
+transmission_do_install: yes
+transmission_do_config: yes
+transmission_do_deploy: yes
 
 transmission_user: debian-transmission
 transmission_group: debian-transmission
