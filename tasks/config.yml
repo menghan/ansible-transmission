@@ -25,8 +25,8 @@
 - name: create transmission configuration directory
   file:
     path: "{{ transmission_config | dirname }}"
-    owner: root
-    group: root
+    owner: "{{ transmission_user }}"
+    group: "{{ transmission_group }}"
     state: directory
     mode: 0755
 
@@ -35,8 +35,8 @@
     src: etc/transmission-daemon/settings.json.j2
     dest: "{{ transmission_config }}"
     force: yes
-    owner: root
-    group: root
+    owner: "{{ transmission_user }}"
+    group: "{{ transmission_group }}"
     mode: 0644
 
 - name: link configuration to root
