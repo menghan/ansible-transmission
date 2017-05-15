@@ -3,14 +3,15 @@ transmission_do_install: yes
 transmission_do_config: yes
 transmission_do_deploy: yes
 
+transmission_root: /var/lib/transmission-daemon
 transmission_user: debian-transmission
 transmission_group: debian-transmission
 transmission_umask: 2
-transmission_download_dir: /var/lib/transmission-daemon/downloads
+transmission_download_dir: "{{ transmission_root }}/downloads"
 transmission_incomplete_dir_enabled: false
-transmission_incomplete_dir: /var/lib/transmission-daemon/incomplete
+transmission_incomplete_dir: "{{ transmission_root }}/incomplete"
 transmission_watch_dir_enabled: true
-transmission_watch_dir: /var/lib/transmission-daemon/torrents
+transmission_watch_dir: "{{ transmission_root }}/torrents"
 transmission_rpc_auth_required: false
 transmission_rpc_username: youShouldChangeThisUnlessDisablingAuth
 transmission_rpc_password: youShouldChangeThisUnlessDisablingAuth

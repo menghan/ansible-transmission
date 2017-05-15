@@ -5,7 +5,7 @@ After=network.target
 [Service]
 User={{ transmission_user }}
 Type=notify
-ExecStart=/usr/bin/transmission-daemon -f -g /var/lib/transmission-daemon/.config/transmission-daemon --log-error
+ExecStart=/usr/bin/transmission-daemon -f -g {{ transmission_root }}/.config/transmission-daemon --log-error
 ExecReload=/bin/kill -s HUP $MAINPID
 
 [Install]

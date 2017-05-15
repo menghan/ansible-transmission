@@ -16,20 +16,20 @@
 
 - name: chown transmission lib directory
   file:
-    path: /var/lib/transmission-daemon/.config/transmission-daemon
+    path: "{{ transmission_root }}/.config/transmission-daemon"
     owner: "{{ transmission_user }}"
     group: "{{ transmission_group }}"
     recurse: yes
 
 - name: rm current symbol link
   file:
-    path: /var/lib/transmission-daemon/.config/transmission-daemon/settings.json
+    path: "{{ transmission_root }}/.config/transmission-daemon/settings.json"
     state: absent
 
 - name: Copy Transmission configuration
   template:
     src: etc/transmission-daemon/settings.json.j2
-    dest: /var/lib/transmission-daemon/.config/transmission-daemon/settings.json
+    dest: "{{ transmission_root }}/.config/transmission-daemon/settings.json"
     force: yes
     backup: yes
     owner: "{{ transmission_user }}"
@@ -38,7 +38,7 @@
 - name: Copy Transmission configuration
   template:
     src: etc/transmission-daemon/settings.json.j2
-    dest: /var/lib/transmission-daemon/settings.json
+    dest: "{{ transmission_root }}/settings.json"
     force: yes
     backup: yes
     owner: "{{ transmission_user }}"
