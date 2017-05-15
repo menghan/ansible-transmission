@@ -27,6 +27,7 @@
     path: "{{ transmission_config | dirname }}"
     owner: root
     group: root
+    state: directory
     mode: 0755
 
 - name: transmission configuration
