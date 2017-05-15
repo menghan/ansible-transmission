@@ -16,33 +16,37 @@
 
 - name: chown transmission lib directory
   file:
-    path: "{{ transmission_root }}/.config/transmission-daemon"
+    path: "{{ transmission_root }}"
     owner: "{{ transmission_user }}"
     group: "{{ transmission_group }}"
+    state: directory
     recurse: yes
 
-- name: rm current symbol link
+- name: create transmission configuration directory
   file:
-    path: "{{ transmission_root }}/.config/transmission-daemon/settings.json"
-    state: absent
+    path: "{{ transmission_config | dirname }}"
+    owner: root
+    group: root
+    mode: 0755
 
-- name: Copy Transmission configuration
+- name: transmission configuration
   template:
     src: etc/transmission-daemon/settings.json.j2
-    dest: "{{ transmission_root }}/.config/transmission-daemon/settings.json"
+    dest: "{{ transmission_config }}"
     force: yes
-    backup: yes
-    owner: "{{ transmission_user }}"
-    group: "{{ transmission_group }}"
+    owner: root
+    group: root
+    mode: 0644
 
-- name: Copy Transmission configuration
-  template:
-    src: etc/transmission-daemon/settings.json.j2
+- name: link configuration to root
+  file:
+    src: "{{ transmission_config }}"
     dest: "{{ transmission_root }}/settings.json"
-    force: yes
-    backup: yes
+    state: link
+    force: no
     owner: "{{ transmission_user }}"
     group: "{{ transmission_group }}"
+  ignore_errors: yes
 
 - name: Test downloads folder
   command: "ls {{ transmission_download_dir }}"
